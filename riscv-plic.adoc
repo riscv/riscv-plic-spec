@@ -1,0 +1,118 @@
+# RISC-V Platform-Level Interrupt Controller Specification
+
+## Copyright and license information
+
+This RISC-V PLIC specification is
+
+[%hardbreaks]
+(C) 2017 Drew Barbier <drew@sifive.com>
+(C) 2018-2019 Palmer Dabbelt <palmer@sifive.com>
+
+It is licensed under the Creative Commons Attribution 4.0 International
+License (CC-BY 4.0).  The full license text is available at
+https://creativecommons.org/licenses/by/4.0/.
+
+## Introduction
+
+This document contains the RISC-V platform-level interrupt controller (PLIC)
+specification, which defines an interrupt controller specifically designed to
+work in the context of RISC-V systems.  The PLIC multiplexes various device
+interrupts onto the external interrupt lines of various hart contexts, with
+hardware support for interrupt priorities.
+
+## Memory Map
+
+FIXME: This should be more than a comment
+
+/*
+ * The PLIC consists of memory-mapped control registers, with a memory map as
+ * follows:
+ *
+ * base + 0x000000: Reserved (interrupt source 0 does not exist)
+ * base + 0x000004: Interrupt source 1 priority
+ * base + 0x000008: Interrupt source 2 priority
+ * ...
+ * base + 0x000FFC: Interrupt source 1023 priority
+ * base + 0x001000: Pending 0
+ * base + 0x001FFF: Pending
+ * base + 0x002000: Enable bits for sources 0-31 on context 0
+ * base + 0x002004: Enable bits for sources 32-63 on context 0
+ * ...
+ * base + 0x0020FC: Enable bits for sources 992-1023 on context 0
+ * base + 0x002080: Enable bits for sources 0-31 on context 1
+ * ...
+ * base + 0x002100: Enable bits for sources 0-31 on context 2
+ * ...
+ * base + 0x1F1F80: Enable bits for sources 992-1023 on context 15871
+ * base + 0x1F1F84: Reserved
+ * ...              (higher context IDs would fit here, but wouldn't fit
+ *                   inside the per-context priority vector)
+ * base + 0x1FFFFC: Reserved
+ * base + 0x200000: Priority threshold for context 0
+ * base + 0x200004: Claim/complete for context 0
+ * base + 0x200008: Reserved
+ * ...
+ * base + 0x200FFC: Reserved
+ * base + 0x201000: Priority threshold for context 1
+ * base + 0x201004: Claim/complete for context 1
+ * ...
+ * base + 0xFFE000: Priority threshold for context 15871
+ * base + 0xFFE004: Claim/complete for context 15871
+ * base + 0xFFE008: Reserved
+ * ...
+ * base + 0xFFFFFC: Reserved
+ */
+
+## Interrupt Priorities
+
+Each PLIC interrupt source can be assigned a priority by writing to its 32-bit
+memory-mapped `priority` register.  A priority value of 0 is reserved to mean
+``never interrupt'' and effectively dissables the interrupt. Priority 1 is the
+lowest active priority.  Ties between global interrupts of the same priority
+are broken by the Interrupt ID; interrupts with the lowest ID have the highest
+effective priority.
+
+## Interrupt Pending Bits
+
+The current status of the interrupt source pending bits in the PLIC core can be
+read from the pending array, organized as words of 32 bits.  The pending bit
+for interrupt ID $N$ is stored in bit $(N$ mod $32)$ of word $(N/32)$.  Bit 0
+of word 0, which represents the non-existent interrupt source 0, is hardwired
+to zero.
+
+A pending bit in the PLIC core can be cleared by setting the associated enable
+bit then performing a claim.
+
+## Interrupt Enables
+
+Each global interrupt can be enabled by setting the corresponding bit in the
+`enables` register. The `enables` registers are accessed as a contiguous array
+of 32-bit words, packed the same way as the `pending` bits. Bit 0 of enable
+word 0 represents the non-existent interrupt ID 0 and is hardwired to 0.
+
+## Priority Thresholds
+
+The PLIC supports setting of a interrupt priority threshold via the `threshold`
+register.  The `threshold` is a WARL field.  The PLIC will mask all PLIC
+interrupts of a priority less than or equal to `threshold`.  For example, a
+`threshold` value of zero permits all interrupts with non-zero priority.
+
+## Interrupt Claim Process
+
+The PLIC can perform an interrupt claim by reading the `claim/complete`
+register, which returns the ID of the highest priority pending interrupt or
+zero if there is no pending interrupt.  A successful claim will also atomically
+clear the corresponding pending bit on the interrupt source.
+
+The PLIC can perform a claim at any time.
+
+The claim operation is not affected by the setting of the priority threshold
+register.
+
+## Interrupt Completion
+
+The PLIC signals it has completed executing an interrupt handler by writing the
+interrupt ID it received from the claim to the `claim/complete` register.  The
+PLIC does not check whether the completion ID is the same as the last claim ID
+for that target.  If the completion ID does not match an interrupt source that
+is currently enabled for the target, the completion is silently ignored.
