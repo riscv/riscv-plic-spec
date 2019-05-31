@@ -22,46 +22,294 @@ hardware support for interrupt priorities.
 
 ## Memory Map
 
+The `base address of PLIC Memory Map` is implementation-specific. Below sections describe the register block for PLIC registers,
+
+## Interrupt Priorities
+
+Each PLIC interrupt source can be assigned a priority by writing to its `n-bit`
+memory-mapped `priority` register.  A priority value of 0 is reserved to mean
+''never interrupt'' and effectively disables the interrupt. Priority 1 is the
+lowest active priority while the maximun level of priority depends on implementation. Ties between global interrupts of the same priority
+are broken by the Interrupt ID; interrupts with the lowest ID have the highest
+effective priority. +
+The `base address of Interrupt Source Priority block` within PLIC Memory Map region is implementation-specific.
+
+
+|===
+| *PLIC Register Block Name*| *Registers*|*Width of Register*|*Total Size of Register Block in Byte*| *Description*
+|Interrupt Source Priority
+|Interrupt Source Priority #0 to #N
+|x-bit
+|(max(`x-bit`, `n-bit`) occupied by each Interrupt Source Priority * N) / 8
+|This is a continuously memory block contains PLIC Interrupt Source Priority. Total N entities in this memory block. Entity #0 is reserved which indicates Interrupt Source Priority #0 does not exist. + 
+The length in bit of each entity of Interrupt Source Priority is design-specific. The total bits occupied by each Interrupt Source Priority maybe larger than the actual bits used to declare interrupt priority level. + 
+`Width of Register` (`x-bit`) may equal to the bits occupied by Interrupt Source Priority(`n-bit`) or larger than (`n-bit`)
+|===
+
+*PLIC Interrupt Source Priority Implementation Sample* +
+- _Total N=1024 interrupt sources._ +
+- _Register size `x-bit`=32._ +
+- _Interrupt Source Priority #0 is reserved._ +
+- _Each entity in Interrupt Source Priority block occupies 32 bits (`x-bit`=`n-bit`)._ +
+- _The base address of Interrupt Source Priority block is 0._ +
+
+
+	0x000000: Reserved (interrupt source 0 does not exist)
+	0x000004: Interrupt source 1 priority
+	0x000008: Interrupt source 2 priority
+	...
+	0x000FFC: Interrupt source 1023 priority
+
+## Interrupt Pending Bits
+
+The current status of the interrupt source pending bits in the PLIC core can be
+read from the pending array, organized as `x-bit` register.  The pending bit
+for interrupt ID $N$ is stored in bit $(N$ mod $`x-bit`)$ of word $(N/`x-bit`)$.  Bit 0
+of word 0, which represents the non-existent interrupt source 0, is hardwired
+to zero.
+
+A pending bit in the PLIC core can be cleared by setting the associated enable
+bit then performing a claim. +
+The `base address of Interrupt Pending Bits block` within PLIC Memory Map region is implementation-specific.
+|===
+| *PLIC Register Block Name* | *Registers*|*Width of Register*| *Total Size of Register Block in Bit*| *Description*
+|Interrupt Pending Bits
+|Interrupt Pending Bit of Interrupt Source #0 to #N
+|x-bit
+|Total number of Interrupt Sources / 8, which means N / 8 bytes
+|This is a continuously memory block contains PLIC Interrupt Pending Bits. Each Interrupt Pending Bit occupies 1-bit from this register block.
+|===
+
+*PLIC Interrupt Pending Bits Implementation Sample*
+- _Total N=1024 interrupt sources._ +
+- _Register size `x-bit`=32._ +
+- _Each Interrupt Pending Bit occupies 1 bits from this register block._ +
+- _The base address of Interrupt Pending Bits block is 0x001000._ +
+
+
+	0x001000: Interrupt Source #0 to #31 Pending Bits
+	...
+	0x00101f: Interrupt Source #992 to #1023 Pending Bits
+
+
+## Interrupt Enables
+
+Each global interrupt can be enabled by setting the corresponding bit in the
+`enables` register. The `enables` registers are accessed as a contiguous array
+of 32-bit words, packed the same way as the `pending` bits. Bit 0 of enable
+word 0 represents the non-existent interrupt ID 0 and is hardwired to 0.
+
+*_WIP_*
+
+## Priority Thresholds
+
+The PLIC supports setting of a interrupt priority threshold via the `threshold`
+register.  The `threshold` is a WARL field.  The PLIC will mask all PLIC
+interrupts of a priority less than or equal to `threshold`.  For example, a
+`threshold` value of zero permits all interrupts with non-zero priority.
+
+*_WIP_*
+
+## Interrupt Claim Process
+
+The PLIC can perform an interrupt claim by reading the `claim/complete`
+register, which returns the ID of the highest priority pending interrupt or
+zero if there is no pending interrupt.  A successful claim will also atomically
+clear the corresponding pending bit on the interrupt source.
+
+The PLIC can perform a claim at any time.
+
+The claim operation is not affected by the setting of the priority threshold
+register.
+
+*_WIP_*
+
+## Interrupt Completion
+
+The PLIC signals it has completed executing an interrupt handler by writing the
+interrupt ID it received from the claim to the `claim/complete` register.  The
+PLIC does not check whether the completion ID is the same as the last claim ID
+for that target.  If the completion ID does not match an interrupt source that
+is currently enabled for the target, the completion is silently ignored.
+
+
+*_WIP_*
+
+---
+# RISC-V PLIC Specification Affinity
+
+## ACPI Specification: Proposed ACPI Multiple APIC Description Table (MADT) for RISC-V PLIC
+
+### 5.2.12 Multiple APIC Description Table (MADT)
+*Table 5-46 Interrupt Controller Structure Types*
+|===
+| *Value* | *Description*|*_MAT for Processor object*| *_MAT for an I/O APIC object*| *Reference*
+|0x10
+|RISC-V Platform Level Interrupt Controller (PLIC)
+|no
+|no
+|Section 5.2.12.19
+|===
+### 5.2.12.19 RISC-V Platform Level Interrupt Controller (PLIC) Structure
+PLIC is used as platform global external interrupt controller for RISC-V processor. PLIC can be connected to RISC-V processor and the harts in the processor according to the platform design. Multiple PLIC structures is possible reported in MDAT for multiple RISC-V physical processor on platform. The Privilege Modes of external interrupt is also configurable. The properties of interrupt event source and settings of PLIC should be configured by system firmware during POST according to the platform design. The settings of PLIC must be reported in MADT PLIC structure by system firmware. ACPI compliant OS can install the corresponding interrupt handler for handling Supervisor Mode external interrupts. In the case if external interrupt is triggered as Machine Mode external interrupt and the Machine Mode external interrupt is not delegated to Supervisor Mode according to ACPI SDEI table, OS will have to register event handler on Machine Mode external interrupt using Supervisor Binary Interface.
+
+
+*Table 5-67 PLIC Structure*
+|===
+| *Field* |*Byte Length*|*Byte Offset*| *Description*
+|Type
+| 1
+| 0
+| 0x10 PLIC structure
+
+|Length
+|1
+|1
+|28 + n + n * x (See below description)
+
+|Processor UID
+|1
+|2
+|Processor UID, this value matches to _UID value in ACPI processor device object. This also means the processor core index.
+
+|PLIC Base Address
+|8
+|3
+|64-bit physical address of PLIC registers, this also the identifier of PLIC instance.
+
+|Total External Interrupt Sources Supported in this PLIC
+|2
+|11
+|Number of external interrupts supported on this PLIC.
+
+|Number of Harts Connected with PLIC
+|1
+|13
+|Number of harts which are connected by PLIC. The value declared in this filed is equal to the “n” in next field.
+
+|PLIC Target Hart ID [n]
+|n
+|14
+|An array of hart ID in which are connected by PLIC.
+
+|Global System Interrupt Base
+|2
+|14 + n
+|Base interrupt number of Global System Interrupt of this PLIC. Refer to section 5.2.13 for Global System Interrupts
+
+|Maximum Interrupt Priority Levels
+|1
+|16 + n
+|Number of interrupt priority levels supported by this PLIC. A value of zero permit all interrupts with non-zero priority. The maximum interrupt priority is 255.
+
+|Starting Offset to Interrupt Source Priority block
+|4
+|17 + n
+|The relative offset to PLIC physical address, which points to interrupt priority block of interrupt sources supported by this PLIC core. Value of zero means no interrupt priority supported in PLIC.
+
+|Length in Bits of each Interrupt Source Priority
+|2
+|21 + n
+|Length in bits of interrupt source priority.
+
+|Starting Offset to Interrupt Pending Bits Block
+|4
+|23 + n
+|The relative offset to PLIC physical address which points to interrupt pending block. Value of zero means no interrupt pending bits supported in PLIC core.
+|Number of Hart Context Interrupt Description Structures
+|1
+|27 + n
+|Number of Hart context interrupt structures follow PLIC structure. See *Table 5-68*.
+
+|Hart Context Interrupt Description (HCID) Structures
+|n * x
+|28 + n
+|The first HCID structure. Total length in byte for each HCID is referred as “x”.
+|===
+
+*Table 5-68 PLIC HCID Structure*
+
+|===
+| *Field* | *Byte Length*|*Byte Offset *| *Description*
+|Hard ID
+|1
+|0
+|ID of Hart owns these interrupt sources. The value specified in this field must be one of value in PLIC Target Hart ID [n] in *Table 5-67* PLIC structure.
+
+|Privilege Level
+|1
+|1
+|The privilege levels of this Hart. +
+0: User Mode +
+1: Supervisor Mode +
+2: Reserved +
+3: Machine Mode
+
+|Starting Offset to Interrupt Enable Bits Block
+|4
+|2
+|The relative offset to PLIC physical address which points to interrupt enable bits block. Value of zero means no interrupt enable bits supported in PLIC. The interrupt enable bits block is used to enable specific interrupt source for the Hart specified in Hard ID and Privilege Mode specified in Privilege Level in this table (PLIC HCID Structure)
+
+|Offset to the Interrupt Priority Threshold
+|4
+|6
+|The relative offset to PLIC physical address which points to interrupt priority threshold of the Hart specified in Hard ID and Privilege Mode specified in Privilege Level in this table (PLIC HCID Structure). The valid value is in the range of Maximum Interrupt Priority Levels in *Table 5-67 PLIC structure*. The bit length of interrupt priority is specified in Length in Bits of each Interrupt Source Priority in Table *5-67 PLIC structure*.
+
+|Length in Byte of Interrupt Priority Threshold
+|10
+|1
+|The length of Interrupt Priority Threshold register of the Hart specified in Hard ID and Privilege Mode specified in Privilege Level in this table (PLIC HCID Structure)
+
+|Offset to Interrupt Claim/Complete
+|4
+|10
+|The relative offset to PLIC physical address which points to interrupt Claim/Complete register of the Hart specified in Hard ID and Privilege Mode specified in Privilege Level in this table (PLIC HCID Structure).
+|===
+
+
+---
+*Below is previous commit of risc-vplic.adoc*
+
 FIXME: This should be more than a comment
 
-/*
- * The PLIC consists of memory-mapped control registers, with a memory map as
- * follows:
- *
- * base + 0x000000: Reserved (interrupt source 0 does not exist)
- * base + 0x000004: Interrupt source 1 priority
- * base + 0x000008: Interrupt source 2 priority
+/* +
+ * The PLIC consists of memory-mapped control registers, with a memory map as +
+ * follows: +
+ * +
+ * base + 0x000000: Reserved (interrupt source 0 does not exist) +
+ * base + 0x000004: Interrupt source 1 priority +
+ * base + 0x000008: Interrupt source 2 priority +
+ * ... +
+ * base + 0x000FFC: Interrupt source 1023 priority +
+ * base + 0x001000: Pending 0 +
+ * base + 0x001FFF: Pending +
+ * base + 0x002000: Enable bits for sources 0-31 on context 0 +
+ * base + 0x002004: Enable bits for sources 32-63 on context 0 +
+ * ... +
+ * base + 0x0020FC: Enable bits for sources 992-1023 on context 0 +
+ * base + 0x002080: Enable bits for sources 0-31 on context 1 +
+ * ... + +
+ * base + 0x002100: Enable bits for sources 0-31 on context 2 +
+ * ... +
+ * base + 0x1F1F80: Enable bits for sources 992-1023 on context 15871 +
+ * base + 0x1F1F84: Reserved +
+ * ...              (higher context IDs would fit here, but wouldn't fit +
+ *                   inside the per-context priority vector) +
+ * base + 0x1FFFFC: Reserved +
+ * base + 0x200000: Priority threshold for context 0 +
+ * base + 0x200004: Claim/complete for context 0 +
+ * base + 0x200008: Reserved +
  * ...
- * base + 0x000FFC: Interrupt source 1023 priority
- * base + 0x001000: Pending 0
- * base + 0x001FFF: Pending
- * base + 0x002000: Enable bits for sources 0-31 on context 0
- * base + 0x002004: Enable bits for sources 32-63 on context 0
- * ...
- * base + 0x0020FC: Enable bits for sources 992-1023 on context 0
- * base + 0x002080: Enable bits for sources 0-31 on context 1
- * ...
- * base + 0x002100: Enable bits for sources 0-31 on context 2
- * ...
- * base + 0x1F1F80: Enable bits for sources 992-1023 on context 15871
- * base + 0x1F1F84: Reserved
- * ...              (higher context IDs would fit here, but wouldn't fit
- *                   inside the per-context priority vector)
- * base + 0x1FFFFC: Reserved
- * base + 0x200000: Priority threshold for context 0
- * base + 0x200004: Claim/complete for context 0
- * base + 0x200008: Reserved
- * ...
- * base + 0x200FFC: Reserved
- * base + 0x201000: Priority threshold for context 1
- * base + 0x201004: Claim/complete for context 1
- * ...
- * base + 0xFFE000: Priority threshold for context 15871
- * base + 0xFFE004: Claim/complete for context 15871
- * base + 0xFFE008: Reserved
- * ...
- * base + 0xFFFFFC: Reserved
- */
+ * base + 0x200FFC: Reserved +
+ * base + 0x201000: Priority threshold for context 1 +
+ * base + 0x201004: Claim/complete for context 1 +
+ * ... +
+ * base + 0xFFE000: Priority threshold for context 15871 +
+ * base + 0xFFE004: Claim/complete for context 15871 +
+ * base + 0xFFE008: Reserved +
+ * ... +
+ * base + 0xFFFFFC: Reserved +
+ */ +
 
 ## Interrupt Priorities
 
