@@ -22,35 +22,37 @@ hardware support for interrupt priorities.
 
 ## Memory Map
 
-The `base address of PLIC Memory Map` is implementation-specific. Below sections describe the register block for PLIC registers,
+The `base address of PLIC Memory Map` is platform implementation-specific. Below sections describe the register block for PLIC registers,
 
 ## Interrupt Priorities
 
 Each PLIC interrupt source can be assigned a priority by writing to its `n-bit`
-memory-mapped `priority` register.  A priority value of 0 is reserved to mean
+memory-mapped `priority` register.  The `n-bit` indicates the bits which takes from `x-bit` length register for configuring Interrupt Source Priority level. The `n-bit` must be the value of power of 2 and less than `x-bit`. A priority value of 0 is reserved to mean
 ''never interrupt'' and effectively disables the interrupt. Priority 1 is the
-lowest active priority while the maximun level of priority depends on implementation. Ties between global interrupts of the same priority
+lowest active priority while the maximun level of priority depends on PLIC implementation. Ties between global interrupts of the same priority
 are broken by the Interrupt ID; interrupts with the lowest ID have the highest
 effective priority. +
-The `base address of Interrupt Source Priority block` within PLIC Memory Map region is implementation-specific.
+The `base address of Interrupt Source Priority block` within PLIC Memory Map region is PLIC implementation-specific.
 
-
+[cols="25%,25%,10%,25%,35%"]
 |===
-| *PLIC Register Block Name*| *Registers*|*Width of Register*|*Total Size of Register Block in Byte*| *Description*
+| *PLIC Register Block Name*| *Registers*|*Width of Register*|*Register Block Size in Byte*| *Description*
 |Interrupt Source Priority
 |Interrupt Source Priority #0 to #N
 |x-bit
-|(max(`x-bit`, `n-bit`) occupied by each Interrupt Source Priority * N) / 8
-|This is a continuously memory block contains PLIC Interrupt Source Priority. Total N entities in this memory block. Entity #0 is reserved which indicates Interrupt Source Priority #0 does not exist. + 
-The length in bit of each entity of Interrupt Source Priority is design-specific. The total bits occupied by each Interrupt Source Priority maybe larger than the actual bits used to declare interrupt priority level. + 
+| ( (Number of Interrupt Source) / (`x-bit` / `n-bit`)) * (`x-bit` / 8 )
+|This is a continuously memory block which contains PLIC Interrupt Source Priority. Total N Interrupt Source Priority in this memory block. Interrupt Source Priority #0 is reserved which indicates it does not exist. + 
+The length of effective bits of each Interrupt Source Priority is PLIC design-specific. The total bits which taken from `x-bit` length register for each Interrupt Source Priority maybe larger than the effective bits used by interrupt priority level. + 
 `Width of Register` (`x-bit`) may equal to the bits occupied by Interrupt Source Priority(`n-bit`) or larger than (`n-bit`)
 |===
 
 *PLIC Interrupt Source Priority Implementation Sample* +
 - _Total N=1024 interrupt sources._ +
-- _Register size `x-bit`=32._ +
-- _Interrupt Source Priority #0 is reserved._ +
+- _Register size in bit is `x-bit`=32._ +
+- _Bits taken from register is `n-bit`=32._ +
 - _Each entity in Interrupt Source Priority block occupies 32 bits (`x-bit`=`n-bit`)._ +
+- _Effective bits of Interrupt Source Priority is 3-bits, means the maximum priority level is 7._ +
+- _Interrupt Source Priority #0 is reserved._ +
 - _The base address of Interrupt Source Priority block is 0._ +
 
 
@@ -70,9 +72,10 @@ to zero.
 
 A pending bit in the PLIC core can be cleared by setting the associated enable
 bit then performing a claim. +
-The `base address of Interrupt Pending Bits block` within PLIC Memory Map region is implementation-specific.
+The `base address of Interrupt Pending Bits block` within PLIC Memory Map region is PLIC implementation-specific.
+[cols="25%,25%,10%,25%,35%"]
 |===
-| *PLIC Register Block Name* | *Registers*|*Width of Register*| *Total Size of Register Block in Bit*| *Description*
+| *PLIC Register Block Name* | *Registers*|*Width of Register*| *Register Block Size in Byte*| *Description*
 |Interrupt Pending Bits
 |Interrupt Pending Bit of Interrupt Source #0 to #N
 |x-bit
@@ -80,7 +83,7 @@ The `base address of Interrupt Pending Bits block` within PLIC Memory Map region
 |This is a continuously memory block contains PLIC Interrupt Pending Bits. Each Interrupt Pending Bit occupies 1-bit from this register block.
 |===
 
-*PLIC Interrupt Pending Bits Implementation Sample*
+*PLIC Interrupt Pending Bits Implementation Sample* +
 - _Total N=1024 interrupt sources._ +
 - _Register size `x-bit`=32._ +
 - _Each Interrupt Pending Bit occupies 1 bits from this register block._ +
