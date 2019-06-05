@@ -195,7 +195,7 @@ PLIC is used as platform global external interrupt controller for RISC-V process
 |14
 |An array of hart ID in which are connected by PLIC.
 
-|Global System Interrupt Base
+|Global System Interrupt Vector Base
 |2
 |14 + n
 |Base interrupt number of Global System Interrupt of this PLIC. Refer to section 5.2.13 for Global System Interrupts
@@ -269,6 +269,14 @@ PLIC is used as platform global external interrupt controller for RISC-V process
 |The relative offset to PLIC physical address which points to interrupt Claim/Complete register of the Hart specified in Hard ID and Privilege Mode specified in Privilege Level in this table (PLIC HCID Structure).
 |===
 
+
+image::https://github.com/changab/riscv-plic-acpi-images/blob/master/Figure5-24.jpg[GitHub]
+
+### Figure 5.24 PLIC-Global System Interrupts (Single Processor and Single PLIC Scenario)
+
+image::https://github.com/changab/riscv-plic-acpi-images/blob/master/Figure5-25.jpg[GitHub]
+
+### Figure 5.25 PLIC-Global System Interrupts (Multiple Processors and Multiple PLICs Scenario)
 
 ---
 *Below is previous commit of risc-vplic.adoc*
