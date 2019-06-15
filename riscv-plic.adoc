@@ -57,10 +57,14 @@ image::https://github.com/changab/riscv-plic-acpi-images/blob/master/PLICArch.jp
 
 The `base address of PLIC Memory Map` is platform implementation-specific. Below sections describe the register block of PLIC registers,
 
+## Register Width
+
+The memory map register width is in 32-bit.
+
 ## Interrupt Priorities
 
 If PLIC support Interrupt Priorities, then each PLIC interrupt source can be assigned a priority by writing to its `n-bit`
-memory-mapped `priority` register.  The `n-bit` indicates the bits which takes from `x-bit` length register for configuring Interrupt Source Priority level. The `n-bit` must be the value of power of 2 and less than `x-bit`. A priority value of 0 is reserved to mean
+memory-mapped `priority` register.  The `n-bit` indicates the bits which takes from 32-bit length register for configuring Interrupt Source Priority level. The `n-bit` must be the value of power of 2 and less than 32-bit. A priority value of 0 is reserved to mean
 ''never interrupt'' and effectively disables the interrupt. Priority 1 is the
 lowest active priority while the maximun level of priority depends on PLIC implementation. Ties between global interrupts of the same priority
 are broken by the Interrupt ID; interrupts with the lowest ID have the highest
@@ -72,18 +76,18 @@ The `base address of Interrupt Source Priority block` within PLIC Memory Map reg
 | *PLIC Register Block Name*| *Registers*|*Width of Register*|*Register Block Size in Byte*| *Description*
 |Interrupt Source Priority
 |Interrupt Source Priority #0 to #N
-|x-bit
-| ( (Number of Interrupt Source) / (`x-bit` / `n-bit`)) * (`x-bit` / 8 )
+|32-bit
+| ( (Number of Interrupt Source) / (32 / `n-bit`)) * 4
 |This is a continuously memory block which contains PLIC Interrupt Source Priority. Total N Interrupt Source Priority in this memory block. Interrupt Source Priority #0 is reserved which indicates it does not exist. + 
-The length of effective bits of each Interrupt Source Priority is PLIC design-specific. The total bits which taken from `x-bit` length register for each Interrupt Source Priority maybe larger than the effective bits used by interrupt priority level. + 
-`Width of Register` (`x-bit`) may equal to the bits occupied by Interrupt Source Priority(`n-bit`) or larger than (`n-bit`)
+The length of effective bits of each Interrupt Source Priority is PLIC design-specific. The total bits which taken from 32-bit length register for each Interrupt Source Priority maybe larger than the effective bits used by interrupt priority level. + 
+`Width of Register` (32-bit) may equal to the bits occupied by Interrupt Source Priority(`n-bit`) or larger than (`n-bit`)
 |===
 
 *PLIC Interrupt Source Priority Implementation Sample* +
 - _Total N=1024 interrupt sources._ +
-- _Register size in bit is `x-bit`=32._ +
+- _Register size is 32-bit._ +
 - _Bits taken from register is `n-bit`=32._ +
-- _Each entity in Interrupt Source Priority block occupies 32 bits (`x-bit`=`n-bit`)._ +
+- _Each entity in Interrupt Source Priority block occupies 32 bits._ +
 - _Effective bits of Interrupt Source Priority is 3-bits, means the maximum priority level is 7._ +
 - _Interrupt Source Priority #0 is reserved._ +
 - _The base address of Interrupt Source Priority block is 0._ +
@@ -98,8 +102,8 @@ The length of effective bits of each Interrupt Source Priority is PLIC design-sp
 ## Interrupt Pending Bits
 
 The current status of the interrupt source pending bits in the PLIC core can be
-read from the pending array, organized as `x-bit` register.  The pending bit
-for interrupt ID $N$ is stored in bit (N mod `x-bit`) of word (N/`x-bit`).  Bit 0
+read from the pending array, organized as 32-bit register.  The pending bit
+for interrupt ID N is stored in bit (N mod 32) of word (N/32).  Bit 0
 of word 0, which represents the non-existent interrupt source 0, is hardwired
 to zero.
 
@@ -111,14 +115,14 @@ The `base address of Interrupt Pending Bits block` within PLIC Memory Map region
 | *PLIC Register Block Name* | *Registers*|*Width of Register*| *Register Block Size in Byte*| *Description*
 |Interrupt Pending Bits
 |Interrupt Pending Bit of Interrupt Source #0 to #N
-|x-bit
-|Total number of Interrupt Sources / 8, which means N / 8 bytes
+|32-bit
+|(Total number of Interrupt Sources) / 8, which means N / 8 bytes
 |This is a continuously memory block contains PLIC Interrupt Pending Bits. Each Interrupt Pending Bit occupies 1-bit from this register block.
 |===
 
 *PLIC Interrupt Pending Bits Implementation Sample* +
 - _Total N=1024 interrupt sources._ +
-- _Register size `x-bit`=32._ +
+- _Register size 32-bit._ +
 - _Each Interrupt Pending Bit occupies 1 bits from this register block._ +
 - _The base address of Interrupt Pending Bits block is 0x001000._ +
 
@@ -132,7 +136,7 @@ The `base address of Interrupt Pending Bits block` within PLIC Memory Map region
 
 Each global interrupt can be enabled by setting the corresponding bit in the
 `enables` register. The `enables` registers are accessed as a contiguous array
-of x-bit registers, packed the same way as the `pending` bits. Bit 0 of enable
+of 32-bit registers, packed the same way as the `pending` bits. Bit 0 of enable
 register 0 represents the non-existent interrupt ID 0 and is hardwired to 0.
 PLIC may have multiple Interrupt Enable Bits blocks for the contexts according to
 PLIC implementation. The `context` is referred to the specific privilege mode in the
@@ -146,14 +150,14 @@ The `base address of Interrupt Enable Bits block` within PLIC Memory Map region 
 | *PLIC Register Block Name* | *Registers*|*Width of Register*| *Register Block Size in Byte*| *Description*
 |Interrupt Enable Bits
 |Interrupt Enable Bit of Interrupt Source #0 to #N
-|x-bit
+|32-bit
 |Total number of (Interrupt Sources / 8) * (Number of contexts), which means (N / 8) * (Number of contexts) bytes
 |This is a continuously memory block contains PLIC Interrupt Enable Bits. Each Interrupt Enable Bit occupies 1-bit from this register block.
 |===
 
 *PLIC Interrupt Enable Bits Implementation Sample* +
 - _Total N=1024 interrupt sources._ +
-- _Register size `x-bit`=32._ +
+- _Register size 32-bit._ +
 - _Each Interrupt Enable Bit occupies 1 bits from this register block._ +
 - _The base address of Interrupt Pending Bits block is 0x002000._ +
 - _Total 4 contexts for both M-Mode and S-Mode in a 2-Hart RISC-V processor_ +
@@ -187,14 +191,14 @@ The `address of Priority Thresholds register` is PLIC implementation-specific.
 | *PLIC Register Block Name* | *Registers*|*Width of Register*| *Register Block Size in Byte*| *Description*
 |Priority Threshold (blocks)
 |n-bit value of Priority Threshold
-|x-bit
-|( (n-bit + (x-bit - 1) )/x-bit) / 8. +
+|32-bit
+|(n-bit + 31)/32) * 4. +
 If multiple Priority Threshold registers supported for contexts, the total size is (Number of contexts) times of above.
 |This is the register of Priority Thresholds setting
 |===
 
 *PLIC Interrupt Priority Thresholds Implementation Sample* +
-- _Register size `x-bit`=32._ +
+- _Register size 32-bit._ +
 - _The base address of Interrupt Priority Thresholds is 0x00200000._ +
 - _Total 4 contexts._ +
 
@@ -204,7 +208,7 @@ If multiple Priority Threshold registers supported for contexts, the total size 
 	    0x200008: Priority threshold for context 2
 	    0x20000C: Priority threshold for context 3
 		or
-	Distributed registers implementation:
+	Interleave registers implementation:
 	    0x200000: Priority threshold for context 0
 	    0x201000: Priority threshold for context 1
 	    0x202000: Priority threshold for context 2
@@ -219,7 +223,7 @@ The PLIC can perform an interrupt claim by reading the `claim/complete`
 register, which returns the ID of the highest priority pending interrupt or
 zero if there is no pending interrupt.  A successful claim will also atomically
 clear the corresponding pending bit on the interrupt source. +
-The Interrupt Claim Process registers could be context based or one Interrupt Claim Process register shared cross all contexts. Furthermore, the Interrupt Claim Process registers
+The Interrupt Claim Process registers could be context based or one Interrupt Claim Process register shared by all contexts. Furthermore, the Interrupt Claim Process registers
 is not necessary be continuously. This is PLIC implementation-specific and out of RISC-V PLIC specification scope, however it must be spec-out in vendor's PLIC specification.
 
 The PLIC can perform a claim at any time.
@@ -233,14 +237,14 @@ The `address of Interrupt Claim Process register` is PLIC implementation-specifi
 | *PLIC Register Block Name* | *Registers*|*Width of Register*| *Register Block Size in Byte*| *Description*
 |Interrupt Claim Process (blocks)
 |Interrupt Claim Process register
-|x-bit
-|x-bit / 8. +
+|32-bit
+|4 +
 If multiple Interrupt Claim Process registers is supported and located continuously, then total size is (Number of contexts) times of above.
 |This is the register used to acquire interrupt ID.
 |===
 
 *PLIC Interrupt Claim Process Implementation Sample* +
-- _Register size `x-bit`=32._ +
+- _Register size 32-bit._ +
 - _Total 4 contexts._ +
 
 	Continuously registers implementation:
@@ -249,11 +253,11 @@ If multiple Interrupt Claim Process registers is supported and located continuou
 	    0x201008: Interrupt Claim Process for context 2
 	    0x20100C: Interrupt Claim Process for context 3
 		or
-	Distributed registers implementation:
-	    0x204000: Interrupt Claim Process for context 0
-	    0x205000: Interrupt Claim Process for context 1
-	    0x206000: Interrupt Claim Process for context 2
-	    0x207000: Interrupt Claim Process for context 3
+	Interleave registers implementation:
+	    0x200004: Interrupt Claim Process for context 0
+	    0x201004: Interrupt Claim Process for context 1
+	    0x202004: Interrupt Claim Process for context 2
+	    0x203004: Interrupt Claim Process for context 3
 		or
 	Shared register:
 	    0x201000: Interrupt Claim Process for all contexts
@@ -265,7 +269,7 @@ interrupt ID it received from the claim to the `claim/complete` register.  The
 PLIC does not check whether the completion ID is the same as the last claim ID
 for that target.  If the completion ID does not match an interrupt source that
 is currently enabled for the target, the completion is silently ignored.
-The Interrupt Completion registers could be context based or one Interrupt Completion register shared cross all contexts. Furthermore, the Interrupt Completion registers
+The Interrupt Completion registers could be context based or one Interrupt Completion register shared by all contexts. Furthermore, the Interrupt Completion registers
 is not necessary be continuously. This is PLIC implementation-specific and out of RISC-V PLIC specification scope, however it must be spec-out in vendor's PLIC specification.
 The Interrupt Completion register could be the same address as PLIC Interrupt Claim Process hence the read access is for PLIC Interrupt Claim Process, the write access is for Interrupt Completion.
 This is also PLIC implementation-specific.
@@ -276,14 +280,14 @@ The `address of Interrupt Completion register` is PLIC implementation-specific.
 | *PLIC Register Block Name* | *Registers*|*Width of Register*| *Register Block Size in Byte*| *Description*
 |Interrupt Completion (blocks)
 |Interrupt Completion register
-|x-bit
-|x-bit / 8. +
+|32-bit
+|4 +
 If multiple Interrupt Completion registers supported and located continuously, then total size is (Number of contexts) times of above.
 |This is offset to the base address of PLIC Memory Map which points to the register of Interrupt Completion
 |===
 
 *PLIC Interrupt Completion Implementation Sample* +
-- _Register size `x-bit`=32._ +
+- _Register size is 32-bit._ +
 - Same address as Interrupt Claim Process register
 - _Total 4 contexts._ +
 
@@ -293,11 +297,11 @@ If multiple Interrupt Completion registers supported and located continuously, t
 	    0x201008: Interrupt Completion for context 2
 	    0x20100C: Interrupt Completion for context 3
 		or
-	Distributed registers implementation:
-	    0x204000: Interrupt Completion for context 0
-	    0x205000: Interrupt Completion for context 1
-	    0x206000: Interrupt Completion for context 2
-	    0x207000: Interrupt Completion for context 3
+	Interleave registers implementation:
+	    0x200004: Interrupt Completion for context 0
+	    0x201004: Interrupt Completion for context 1
+	    0x202004: Interrupt Completion for context 2
+	    0x203004: Interrupt Completion for context 3
 		or
 	Shared register:
 	    0x201000: Interrupt Completion for all contexts
