@@ -23,7 +23,7 @@ This specification defines the general PLIC architecture and operation parameter
 However, the PLICv1 spec-out here is the RISC-V Platform Level Interrupt
 Controller which is commonly using on RISC-V platforms currently.
 
-## The RISC-V PLICv1
+## The RISC-V Standard PLIC, PLICv1
 
 RISC-V PLICv1 is the first version of RISC-V platform-level interrupt controller 
 which simply defines the operation parameters for configuring the characteristics
@@ -31,8 +31,8 @@ of external interrupts and handling external interrupt events. Besides of the ba
 address of PLIC memory-mapped registers which is platform-specific implementation,
 the control registers of PLIC are designed to locate at the fixed offset within
 memory-mapped region. The characteristics of PLIC operation parameters are fixed as
-well. The PLIC which claimed as PLICv1-Compliant should follow the implementations
-mentioned in below sections.
+well. The PLIC which claimed as PLICv1-Compliant standard PLIC should follow the
+implementations mentioned in below sections.
 
 image::https://github.com/changab/riscv-plic-acpi-images/blob/master/PLIC.jpg[GitHub][1000,643]
 
@@ -40,7 +40,32 @@ image::https://github.com/changab/riscv-plic-acpi-images/blob/master/PLIC.jpg[Gi
 
 ## RISC-V PLIC Operation Parameters
 
-Six PLIC operation parameter register blocks are standardized in this spec, those are: +
+General PLIC operation parameter register blocks are defined in this spec, those are: +
+
+- *Interrupt Priorities registers:* +
+   The interrupt priority for each interrupt source. +
+
+- *Interrupt Pending Bits registers:* +
+   The interrupt pending status of each interrupt source. +
+   
+- *Interrupt Enables registers:* +
+   The enablement of interrupt source. +
+
+- *Priority Thresholds registers:* +
+   The interrupt priority threshold. +
+
+- *Interrupt Claim registers:* +
+   The register to acquire interrupt source ID. +
+   
+- *Interrupt Completion registers:* +
+   The register to send interrupt completion message to the associated gateway. +
+   
+- *Edge and Level Trigger registers:* +
+   The register determines the edge or level trigger of interrupt source. +
+
+## RISC-V PLICv1 Operation Parameters
+
+The openration parameter register blocks used by standard PLICv1 are: +
 
 - *Interrupt Priorities registers:* +
    The interrupt priority for each interrupt source. +
@@ -127,6 +152,9 @@ memory-mapped `priority` register.  The `n-bit` indicates the bits which takes f
 lowest active priority while the maximun level of priority depends on PLIC implementation. Ties between global interrupts of the same priority
 are broken by the Interrupt ID; interrupts with the lowest ID have the highest
 effective priority. +
+ +
+The base address of Interrupt Source Priority block within PLIC Memory Map region is PLIC implementation-specific. +
+*For PLICv1-specific*, the base address of Interrupt Source Priority block is fixed at 0x000000.
 
 [cols="10%,15%,20%,25%,30%"]
 |===
@@ -135,11 +163,11 @@ effective priority. +
 |Interrupt Source Priority #0 to #N
 | ( (Number of Interrupt Source) / (32 / `n-bit`)) * 4
 |This is a continuously memory block which contains PLIC Interrupt Source Priority. Total N Interrupt Source Priority in this memory block. Interrupt Source Priority #0 is reserved which indicates it does not exist. + 
-The length of effective bits of each Interrupt Source Priority is PLIC design-specific. The total bits which taken from 32-bit length register for each Interrupt Source Priority maybe larger than the effective bits used by interrupt priority level. + 
+The length of effective bits of each Interrupt Source Priority is PLIC design-specific. The number of bits (n-bit) which taken from 32-bit register for each Interrupt Source Priority maybe larger than the effective bits used by interrupt priority level. + 
 `Width of Register` (32-bit) may equal to the bits occupied by Interrupt Source Priority(`n-bit`) or larger than (`n-bit`)
 | *Interrupt sources:* 1024 (N=1024) +
-  *Bits taken from register:* 32-bit +
-  *Bits of Interrupt Source Priority:* 3 bits (n-bit=3, 8 priority levels) +
+  *Bits taken from register:* 32-bit (n-bit=32) +
+  *Bits of Interrupt Source Priority:* 3 bits for 8 priority levels +
   *Register Block Address:* 0x000000 +
   *Register Block Size:* 0x1000 +
 |===
@@ -162,6 +190,9 @@ to zero.
 
 A pending bit in the PLIC core can be cleared by setting the associated enable
 bit then performing a claim. +
+ +
+The base address of Interrupt Pending Bits block within PLIC Memory Map region is PLIC implementation-specific. +
+*For PLICv1-specific*, the base address of Interrupt Pending Bits block is fixed at 0x001000.
 
 [cols="10%,15%,20%,25%,30%"]
 |===
@@ -192,7 +223,10 @@ PLIC may have multiple Interrupt Enable Bits blocks for the contexts according t
 PLIC implementation. The `context` is referred to the specific privilege mode in the
 specific Hart of the specific RISC-V processor instance. How PLIC organizes interrupts
 for the contexts (Hart and privilege mode) is out of RISC-V PLIC specification scope, 
-however it must be spec-out in vendor's PLIC specification.
+however it must be spec-out in vendor's PLIC specification. +
+ +
+The base address of Interrupt Enable Bits block within PLIC Memory Map region is PLIC implementation-specific. +
+*For PLICv1-specific*, the base address of Interrupt Enable Bits block is fixed at 0x002000.
 
 [cols="10%,15%,20%,25%,30%"]
 |===
@@ -238,6 +272,8 @@ Priority Thresholds registers are not necessary be organized in continuously. Th
 implementation-specific and out of RISC-V PLIC specification scope, however it must be spec-out
 in vendor's PLIC specification. +
  +
+The base address of Priority Thresholds register block is PLIC implementation-specific.
+ +
 *For PLICv1-specific*, Priority Threshold registers are not organized in continuously in memory-mapped region.
 Priority Threshold for each context is located at 4K alignement starts from offset 0x200000 as
 it delineated in memory map below.
@@ -253,7 +289,7 @@ Priority Threshold registers are organized in continuously. +
 
 |This is the register of Priority Thresholds setting
 | *Interrupt sources:* 1024 (N=1024) +
-  *Bits of Interrupt Source Priority:* 3 bits (n-bit=3, 8 priority levels) +
+  *Bits of Interrupt Source Priority:* 3 bits (8 priority levels) +
   *Register Block Address:* 0x0200000 +
   *Total Contexts:* 15872 +
 |===
@@ -280,6 +316,8 @@ by the setting of the priority threshold register. +
 The Interrupt Claim Process register are context based and not necessary be organized in continuously.
 That is PLIC implementation-specific and out of RISC-V PLIC specification scope, however
 it must be spec-out in vendor's PLIC specification. +
+ +
+The base address of Interrupt Claim Process register is PLIC implementation-specific. +
  +
 *For PLICv1-specific*, Interrupt Claim Process registers are not organized in continuously in memory-mapped region.
 Interrupt Claim Process register for each ceach context is located at (4K alignement + 4) starts from offset 0x200000 as
@@ -322,6 +360,8 @@ however it must be spec-out in vendor's PLIC specification. +
 The Interrupt Completion register is the same address as PLIC Interrupt Claim Process hence the read access is for PLIC Interrupt Claim Process,
 the write access is for Interrupt Completion. +
  +
+The base address of Interrupt Claim Process register is PLIC implementation-specific. +
+ +
 *For PLICv1-specific*, Interrupt Completion registers are not organized in continuously in memory-mapped region.
 Interrupt Completion register for each context is located at (4K alignement + 4) starts from offset 0x200000 as
 it delineated in memory map below.
@@ -349,6 +389,28 @@ If multiple Interrupt Completion registers supported and located continuously, t
 	...
 	...
 	0x3FFF004: Interrupt Completion for context 15871
+
+	
+## Interrupt Edge or Level Trigger
+
+The Interrupt Edge or Level Trigger register deﬁnes if an interrupt source is Edge or Level Triggered
+for each interrupt event source. Each bit in this register represents the interrupt trigger mode of 
+interrupt source. The bit set to '1' means the interrupt is trigger at rising-edge, otherwise is level
+triggered.
+ +
+The base address of Interrupt Edge or Level Trigger register is PLIC implementation-specific. +
+ +
+*For PLICv1-specific*, Interrupt Edge or Level Trigger is not supported.
+
+[cols="10%,15%,20%,25%,30%"]
+|===
+| *PLIC Register Block Name* | *Registers*|*Register Block Size in Byte*| *Description*| *PLICv1-Compliant Implementation*
+|Interrupt Triger Mode
+|Interrupt Edge or Level Trigger register
+|((Total number of Interrupt Sources) / 8, which means N / 8 bytes +
+|This is register to set interrupt trigger mode of device connected
+| N/A
+|===
 
 ---
 # *RISC-V PLIC Specification Affinity*
@@ -396,7 +458,7 @@ PLIC is used as platform global external interrupt controller for RISC-V process
 |PLIC Base Address
 |8
 |4
-|64-bit physical address of PLIC registers, this also the identifier of PLIC instance.
+|64-bit physical base address of PLIC registers, this also the identifier of PLIC instance.
 
 |Total External Interrupt Sources Supported in this PLIC
 |2
@@ -426,7 +488,7 @@ PLIC is used as platform global external interrupt controller for RISC-V process
 |Starting Offset to Interrupt Source Priority block
 |4
 |18 + n
-|The relative offset to PLIC physical address, which points to interrupt priority block of interrupt sources supported by this PLIC core. Value of zero means no interrupt priority supported in PLIC.
+|The relative offset to PLIC physical base address, which points to interrupt priority block of interrupt sources supported by this PLIC core. Value of zero means no interrupt priority supported in PLIC.
 
 |Length in Bits of each Interrupt Source Priority
 |2
@@ -436,15 +498,21 @@ PLIC is used as platform global external interrupt controller for RISC-V process
 |Starting Offset to Interrupt Pending Bits Block
 |4
 |24 + n
-|The relative offset to PLIC physical address which points to interrupt pending block. Value of zero means no interrupt pending bits supported in PLIC core.
+|The relative offset to PLIC physical base address which points to interrupt pending block. Value of zero means no interrupt pending bits supported in PLIC core.
+
+|Starting Offset to Interrupt Edge/Level Trigger block
+|4
+|28 + n
+|The relative offset to PLIC physical base address, which points to interrupt trigger mode register block of interrupt sources supported by this PLIC core. Value of zero means no interrupt trigger mode supported in PLIC.
+
 |Number of Hart Context Interrupt Description Structures
 |1
-|28 + n
+|32 + n
 |Number of Hart context interrupt structures follow PLIC structure. See *Table 5-68*.
 
 |Hart Context Interrupt Description (HCID) Structures
 |n * x
-|29 + n
+|23 + n
 |The first HCID structure. Total length in byte for each HCID is referred as “x”.
 |===
 
@@ -532,7 +600,7 @@ Below sections describe the Device Tree syntax used to delineate the characteris
 |Platform-specific
 |===
 
-### RISC-V PLICv1 Specific Binding Device Tree Syntax 
+### RISC-V PLIC Specific Binding Device Tree Syntax 
 
 Below additional properties are binded to RISC-V PLIC Device Tree to provide sufficient information to device driver.
 `<company>` name is fixed to `riscv` associated with properties defined in below table for RISC-V PLIC.
@@ -540,69 +608,42 @@ Below additional properties are binded to RISC-V PLIC Device Tree to provide suf
 [cols="25%,20%,35%,15%"]
 |===
 | *Device Tree Syntax* | *Description* | *Property Type* | *Property Value*
+|nint
+|Number of interrupt sources provided by this PLIC.
+|<u32>
+|PLIC design specific
+
+|max-priority
+|Maximum priority supported by this PLIC. +
+Undeclared means the Interrupt Priority is unsupported.
+|<u32> +
+Value of `zero` means Interrupt Priority is unsupported.
+|PLIC design specific
+
 |ndev
 |Number of devices connected to this PLIC
 |<u32>
 |Platform-specific
-
-|int-context
-|Interrupt Operation Parameters for the Hart Contexts
-|<prop-encoded-array> +
-This property describes the interrupt sources on specific RISC-V Hart context.
-Multiple `int-context` properties could be declared in PLICv1 Device Tree. If multiple
-`int-context` are declared, the secquence of `int-context` must be in the same order
-of supported contexts organized in Interuupt Enable block.
-Platform vendor shall spec-out the platform-implementation in platform specification. +
  +
-*parent-cpu* _<phandle>_ +
-The parent CPU node. +
- +
-*hart-id:* _<u32>_ +
-The Hart ID of this CPU. +
- +
-*privilege-mode:* _<string>_ +
-The privilege mode of this context. The value could be one of below, +
-  "M-Mode", +
-  "S-Mode", +
-  "U-Mode" +
- +
-|Platform-specific
+|PLIC design specific
 
 |===
 			
-### For the platforms the OS image with device driver which well knows the configuration of RISC-V PLICv1:
+### For the platforms on which the PLIC is compliant with RISC-V PLICv1 specification:
 
-In this use case, the Device Tree of RISC-V PLICv1 could be small and simple.
+In this use case, the Device Tree of RISC-V PLICv1 could be small and simple. Below Device Tree takes SiFive PLIC as reference,
 
         interrupt-controller@c000000 {
 　　　　　　　　　#interrupt-cells = <0x00000001>;
 　　　　　　　　　compatible = "riscv,plicv1", "sifive, plic";
 　　　　　　　　　interrupt-controller;
+　　　　　　　　　riscv,ndev = <0x00000035>;
+　　　　　　　　　riscv,max-priority = <0x00000007>;
 　　　　　　　　　interrupts-extended = <0x00000010 0x0000000b 0x00000011 0x0000000b 0x00000011 0x00000009 0x00000012 0x0000000b 0x00000012 0x00000009 0x00000013 0x0000000b 0x00000013 0x00000009 0x00000014 0x0000000b 0x00000014 0x00000009>;	
 　　　　　　　　　reg = <0x00000000 0x0c000000 0x00000000 0x04000000>;
 　　　　　　　　　reg-names = "control";
         };
-	
 		
-### For the single OS image with the device driver supports RISC-V PLICv1-Compliant PLICs:
+### For the platforms on which the PLIC is not compliant with RISC-V PLICv1 specification:
 
-In this use case, the Device Tree of RISC-V PLIC is more complex in order to support single OS image and device driver. Below Device Tree takes SiFive PLIC as reference,
-
-        interrupt-controller@c000000 {
-　　　　　　　　　#interrupt-cells = <0x00000001>;
-　　　　　　　　　compatible = "riscv,plicv1";
-　　　　　　　　　interrupt-controller;
-　　　　　　　　　interrupts-extended = <0x00000010 0x0000000b 0x00000011 0x0000000b 0x00000011 0x00000009 0x00000012 0x0000000b 0x00000012 0x00000009 0x00000013 0x0000000b 0x00000013 0x00000009 0x00000014 0x0000000b 0x00000014 0x00000009>;	
-　　　　　　　　　reg = <0x00000000 0x0c000000 0x00000000 0x04000000>;
-　　　　　　　　　reg-names = "control";
-　　　　　　　　　riscv,ndev = <0x00000035>;			
-　　　　　　　　　riscv,int-context = <&cpu0 0x00000000 "M-Mode">;
-　　　　　　　　　riscv,int-context = <&cpu0 0x00000001 "M-Mode">; 
-　　　　　　　　　riscv,int-context = <&cpu0 0x00000001 "S-Mode">;
-　　　　　　　　　riscv,int-context = <&cpu0 0x00000002 "M-Mode">; 
-　　　　　　　　　riscv,int-context = <&cpu0 0x00000002 "S-Mode">; 
-　　　　　　　　　riscv,int-context = <&cpu0 0x00000003 "M-Mode">;
-　　　　　　　　　riscv,int-context = <&cpu0 0x00000003 "S-Mode">; 
-　　　　　　　　　riscv,int-context = <&cpu0 0x00000004 "M-Mode">; 
-　　　　　　　　　riscv,int-context = <&cpu0 0x00000004 "S-Mode">; 			
-        };		
+Vendor-specic Device Tree syntax to delineate operation parameters of PLIC
