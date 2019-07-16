@@ -79,7 +79,7 @@ The `base address of PLIC Memory Map` is platform implementation-specific.
 	...
 	base + 0x000FFC: Interrupt source 1023 priority
 	base + 0x001000: Interrupt Pending bit 0-31
-	base + 0x00101F: Interrupt Pending bit 992-1023
+	base + 0x00107C: Interrupt Pending bit 992-1023
 	...	
 	base + 0x002000: Enable bits for sources 0-31 on context 0
 	base + 0x002004: Enable bits for sources 32-63 on context 0
@@ -179,7 +179,7 @@ bit then performing a claim. +
 
 	0x001000: Interrupt Source #0 to #31 Pending Bits
 	...
-	0x00101F: Interrupt Source #992 to #1023 Pending Bits
+	0x00107C: Interrupt Source #992 to #1023 Pending Bits
 
 
 ## Interrupt Enables
@@ -475,11 +475,6 @@ PLIC is used as platform global external interrupt controller for RISC-V process
 |4
 |6
 |The relative offset to PLIC physical address which points to interrupt priority threshold of the Hart specified in Hart ID and Privilege Mode specified in Privilege Level in this table (PLIC HCID Structure). The valid value is in the range of Maximum Interrupt Priority Levels in *Table 5-67 PLIC structure*. The bit length of interrupt priority is specified in Length in Bits of each Interrupt Source Priority in Table *5-67 PLIC structure*.
-
-|Length in Byte of Interrupt Priority Threshold
-|10
-|1
-|The length of Interrupt Priority Threshold register of the Hart specified in Hart ID and Privilege Mode specified in Privilege Level in this table (PLIC HCID Structure)
 
 |Offset to Interrupt Claim/Complete
 |4
