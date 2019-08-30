@@ -18,11 +18,11 @@ https://creativecommons.org/licenses/by/4.0/.
 This document contains the RISC-V platform-level interrupt controller (PLIC)
 specification, which defines an interrupt controller specifically designed to
 work in the context of RISC-V systems.  The PLIC multiplexes various device
-interrupts onto the external interrupt lines of various Hart contexts, with
+interrupts onto the external interrupt lines of Hart contexts, with
 hardware support for interrupt priorities. +
 This specification defines the general PLIC architecture and operation parameters.
 The PLIC which claimed as PLIC-Compliant standard PLIC should follow the
-implementations mentioned in below sections.
+implementations mentioned in sections below.
 
 image::https://github.com/riscv/riscv-plic-spec/blob/UNIX-PLIC-Spec/Images/PLIC.jpg[GitHub][1000,643]
 
@@ -104,7 +104,7 @@ The `base address of PLIC Memory Map` is platform implementation-specific.
 	...	
 	base + 0x3FFFFFC: Reserved
 	
-Below sections describe the control register blocks of PLIC operation parameters.
+Sections below describe the control register blocks of PLIC operation parameters.
 
 ## Register Width
 
@@ -112,7 +112,7 @@ The memory map register width is in 32-bit.
 
 ## Interrupt Priorities
 
-If PLIC support Interrupt Priorities, then each PLIC interrupt source can be assigned a priority by writing to its 32-bit
+If PLIC supports Interrupt Priorities, then each PLIC interrupt source can be assigned a priority by writing to its 32-bit
 memory-mapped `priority` register.  A priority value of 0 is reserved to mean ''never interrupt'' and effectively 
 disables the interrupt. Priority 1 is the lowest active priority while the maximun level of priority depends on 
 PLIC implementation. Ties between global interrupts of the same priority are broken by the Interrupt ID; interrupts 
