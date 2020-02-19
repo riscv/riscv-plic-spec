@@ -24,7 +24,7 @@ This specification defines the general PLIC architecture and operation parameter
 The PLIC which claimed as PLIC-Compliant standard PLIC should follow the
 implementations mentioned in sections below.
 
-image::https://github.com/riscv/riscv-plic-spec/blob/UNIX-PLIC-Spec/Images/PLIC.jpg[GitHub][1000,643]
+image::https://github.com/riscv/riscv-plic-spec/tree/master/Images/PLIC.jpg[GitHub]
 
 #### Figure 1 RISC-V PLIC Interrupt Architecture Block Diagram
 
@@ -54,7 +54,7 @@ General PLIC operation parameter register blocks are defined in this spec, those
 
 Below is the figure of PLIC Operation Parameter Block Diagram,
 
-image::https://github.com/riscv/riscv-plic-spec/blob/UNIX-PLIC-Spec/Images/PLICArch.jpg[GitHub]
+image::https://github.com/riscv/riscv-plic-spec/tree/master/Images/PLICArch.jpg[GitHub]
 
 #### Figure 2 PLIC Operation Parameter Block Diagram
 
