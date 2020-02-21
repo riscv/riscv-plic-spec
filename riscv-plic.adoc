@@ -75,19 +75,19 @@ The `base address of PLIC Memory Map` is platform implementation-specific.
 	base + 0x002000: Enable bits for sources 0-31 on context 0
 	base + 0x002004: Enable bits for sources 32-63 on context 0
 	...
-	base + 0x00207F: Enable bits for sources 992-1023 on context 0
+	base + 0x00207C: Enable bits for sources 992-1023 on context 0
 	base + 0x002080: Enable bits for sources 0-31 on context 1
 	base + 0x002084: Enable bits for sources 32-63 on context 1	
 	...
-	base + 0x0020FF: Enable bits for sources 992-1023 on context 1
+	base + 0x0020FC: Enable bits for sources 992-1023 on context 1
 	base + 0x002100: Enable bits for sources 0-31 on context 2
 	base + 0x002104: Enable bits for sources 32-63 on context 2	
 	...
-	base + 0x00217F: Enable bits for sources 992-1023 on context 2
+	base + 0x00217C: Enable bits for sources 992-1023 on context 2
 	...
 	base + 0x1F1F80: Enable bits for sources 0-31 on context 15871
 	base + 0x1F1F84: Enable bits for sources 32-63 on context 15871		
-	base + 0x1F1FFF: Enable bits for sources 992-1023 on context 15871
+	base + 0x1F1FFC: Enable bits for sources 992-1023 on context 15871
 	...	
 	base + 0x1FFFFC: Reserved
 	base + 0x200000: Priority threshold for context 0
