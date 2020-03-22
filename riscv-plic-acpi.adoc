@@ -1,4 +1,4 @@
-# *RISC-V PLIC ACPI Specification*
+# *RISC-V PLIC ACPI Specification(WIP, NO ECR TO ASWG YET)*
 
 ## Copyright and license information
 
