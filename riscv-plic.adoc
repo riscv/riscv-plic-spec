@@ -1,6 +1,6 @@
-# *RISC-V Platform-Level Interrupt Controller Specification*
+= *RISC-V Platform-Level Interrupt Controller Specification*
 
-## Copyright and license information
+== Copyright and license information
 
 This RISC-V PLIC specification is
 
@@ -13,7 +13,7 @@ It is licensed under the Creative Commons Attribution 4.0 International
 License (CC-BY 4.0).  The full license text is available at
 https://creativecommons.org/licenses/by/4.0/.
 
-## Introduction
+== Introduction
 
 This document contains the RISC-V platform-level interrupt controller (PLIC)
 specification, which defines an interrupt controller specifically designed to
@@ -24,11 +24,10 @@ This specification defines the general PLIC architecture and operation parameter
 The PLIC which claimed as PLIC-Compliant standard PLIC should follow the
 implementations mentioned in sections below.
 
-image::https://github.com/riscv/riscv-plic-spec/blob/UNIX-PLIC-Spec/Images/PLIC.jpg[GitHub][1000,643]
+.Figure 1 RISC-V PLIC Interrupt Architecture Block Diagram
+image::Images/PLIC.jpg[GitHub,1000,643, link=https://github.com/riscv/riscv-plic-spec/blob/master/Images/PLIC.jpg]
 
-#### Figure 1 RISC-V PLIC Interrupt Architecture Block Diagram
-
-## RISC-V PLIC Operation Parameters
+== RISC-V PLIC Operation Parameters
 
 General PLIC operation parameter register blocks are defined in this spec, those are: +
 
@@ -54,11 +53,10 @@ General PLIC operation parameter register blocks are defined in this spec, those
 
 Below is the figure of PLIC Operation Parameter Block Diagram,
 
-image::https://github.com/riscv/riscv-plic-spec/blob/UNIX-PLIC-Spec/Images/PLICArch.jpg[GitHub]
+.Figure 2 PLIC Operation Parameter Block Diagram
+image::Images/PLICArch.jpg[GitHub, link=https://github.com/riscv/riscv-plic-spec/blob/master/Images/PLICArch.jpg]
 
-#### Figure 2 PLIC Operation Parameter Block Diagram
-
-## Memory Map
+== Memory Map
 
 The `base address of PLIC Memory Map` is platform implementation-specific.
 
@@ -106,11 +104,11 @@ The `base address of PLIC Memory Map` is platform implementation-specific.
 	
 Sections below describe the control register blocks of PLIC operation parameters.
 
-## Register Width
+== Register Width
 
 The memory map register width is in 32-bit.
 
-## Interrupt Priorities
+== Interrupt Priorities
 
 If PLIC supports Interrupt Priorities, then each PLIC interrupt source can be assigned a priority by writing to its 32-bit
 memory-mapped `priority` register.  A priority value of 0 is reserved to mean ''never interrupt'' and effectively 
@@ -139,7 +137,7 @@ in this memory block. Interrupt Source Priority #0 is reserved which indicates i
 	...
 	0x000FFC: Interrupt source 1023 priority
 
-## Interrupt Pending Bits
+== Interrupt Pending Bits
 
 The current status of the interrupt source pending bits in the PLIC core can be
 read from the pending array, organized as 32-bit register.  The pending bit
@@ -168,7 +166,7 @@ The base address of Interrupt Pending Bits block within PLIC Memory Map region i
 	0x00107C: Interrupt Source #992 to #1023 Pending Bits
 
 
-## Interrupt Enables
+== Interrupt Enables
 
 Each global interrupt can be enabled by setting the corresponding bit in the
 `enables` register. The `enables` registers are accessed as a contiguous array
@@ -214,7 +212,7 @@ Enable Bit blocks
 	...	
 	0x1F1F80: Interrupt Source #992 to #1023 on context 15871
 	
-## Priority Thresholds
+== Priority Thresholds
 
 PLIC provides context based `threshold register` for the settings of a interrupt priority 
 threshold of each context. The `threshold register` is a WARL field. The PLIC will mask all 
@@ -244,7 +242,7 @@ from offset 0x200000.
 	...
 	0x3FFF000: Priority threshold for context 15871
 	
-## Interrupt Claim Process
+== Interrupt Claim Process
 
 The PLIC can perform an interrupt claim by reading the `claim/complete`
 register, which returns the ID of the highest priority pending interrupt or
