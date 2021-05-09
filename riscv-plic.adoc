@@ -177,7 +177,12 @@ to the specific privilege mode in the specific Hart of specific RISC-V processor
 instance. How PLIC organizes interrupts for the contexts (Hart and privilege mode) 
 is out of RISC-V PLIC specification scope, however it must be spec-out in vendor's 
 PLIC specification. +
- +
+	
+	A hart context is a privilege mode in a hardware execution thread. For example,
+	in an 4 core system with 2-way SMT, you have 8 harts and probably at least two
+	priviledge modes per hart: machine mode and supervisor mode.
+	(ref: https://github.com/torvalds/linux/blob/5bfc75d92efd494db37f5c4c173d3639d4772966/Documentation/devicetree/bindings/interrupt-controller/sifive%2Cplic-1.0.0.yaml) 
+
 The base address of Interrupt Enable Bits block within PLIC Memory Map region is fixed at 0x002000. +
  +
 [cols="15%,20%,20%,45%"]
