@@ -112,7 +112,7 @@ The memory map register width is in 32-bit.
 
 If PLIC supports Interrupt Priorities, then each PLIC interrupt source can be assigned a priority by writing to its 32-bit
 memory-mapped `priority` register.  A priority value of 0 is reserved to mean ''never interrupt'' and effectively 
-disables the interrupt. Priority 1 is the lowest active priority while the maximun level of priority depends on 
+disables the interrupt. Priority 1 is the lowest active priority while the maximum level of priority depends on 
 PLIC implementation. Ties between global interrupts of the same priority are broken by the Interrupt ID; interrupts 
 with the lowest ID have the highest
 effective priority. +
