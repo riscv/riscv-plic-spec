@@ -100,9 +100,9 @@ The `base address of PLIC Memory Map` is platform implementation-specific.
 	base + 0x201000: Priority threshold for context 1
 	base + 0x201004: Claim/complete for context 1
 	...
-	base + 0x3FFE000: Priority threshold for context 15871
-	base + 0x3FFE004: Claim/complete for context 15871
-	base + 0x3FFE008: Reserved
+	base + 0x3FFF000: Priority threshold for context 15871
+	base + 0x3FFF004: Claim/complete for context 15871
+	base + 0x3FFF008: Reserved
 	...	
 	base + 0x3FFFFFC: Reserved
 	
