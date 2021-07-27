@@ -7,7 +7,7 @@ This RISC-V PLIC specification is
 [%hardbreaks]
 (C) 2017 Drew Barbier <drew@sifive.com>
 (C) 2018-2019 Palmer Dabbelt <palmer@sifive.com>
-(C) 2019 Abner Chang, Hewlett Packard Enterprise <abner.chang@hpe.com>
+(C) 2019-2021 Abner Chang, Hewlett Packard Enterprise <abner.chang@hpe.com>
 
 It is licensed under the Creative Commons Attribution 4.0 International
 License (CC-BY 4.0).  The full license text is available at
@@ -20,9 +20,13 @@ specification, which defines an interrupt controller specifically designed to
 work in the context of RISC-V systems.  The PLIC multiplexes various device
 interrupts onto the external interrupt lines of Hart contexts, with
 hardware support for interrupt priorities. +
-This specification defines the general PLIC architecture and operation parameters.
-The PLIC which claimed as PLIC-Compliant standard PLIC should follow the
-implementations mentioned in sections below.
+This specification defines the general PLIC architecture and the operation
+parameters. PLIC supports up-to 1023 interrupts (0 is reserved) and 15872
+contexts, but the actual number of interrupts and context depends on the PLIC
+implementation. However, the implement must adhere to the offset of each
+register within the PLIC operation parameters. The PLIC which claimed as
+PLIC-Compliant standard PLIC should follow the implementations mentioned
+in sections below.
 
 .Figure 1 RISC-V PLIC Interrupt Architecture Block Diagram
 image::Images/PLIC.jpg[GitHub,1000,643, link=https://github.com/riscv/riscv-plic-spec/blob/master/Images/PLIC.jpg]
@@ -73,19 +77,19 @@ The `base address of PLIC Memory Map` is platform implementation-specific.
 	base + 0x002000: Enable bits for sources 0-31 on context 0
 	base + 0x002004: Enable bits for sources 32-63 on context 0
 	...
-	base + 0x00207F: Enable bits for sources 992-1023 on context 0
+	base + 0x00207C: Enable bits for sources 992-1023 on context 0
 	base + 0x002080: Enable bits for sources 0-31 on context 1
 	base + 0x002084: Enable bits for sources 32-63 on context 1	
 	...
-	base + 0x0020FF: Enable bits for sources 992-1023 on context 1
+	base + 0x0020FC: Enable bits for sources 992-1023 on context 1
 	base + 0x002100: Enable bits for sources 0-31 on context 2
 	base + 0x002104: Enable bits for sources 32-63 on context 2	
 	...
-	base + 0x00217F: Enable bits for sources 992-1023 on context 2
+	base + 0x00217C: Enable bits for sources 992-1023 on context 2
 	...
 	base + 0x1F1F80: Enable bits for sources 0-31 on context 15871
 	base + 0x1F1F84: Enable bits for sources 32-63 on context 15871		
-	base + 0x1F1FFF: Enable bits for sources 992-1023 on context 15871
+	base + 0x1F1FFC: Enable bits for sources 992-1023 on context 15871
 	...	
 	base + 0x1FFFFC: Reserved
 	base + 0x200000: Priority threshold for context 0
@@ -96,9 +100,9 @@ The `base address of PLIC Memory Map` is platform implementation-specific.
 	base + 0x201000: Priority threshold for context 1
 	base + 0x201004: Claim/complete for context 1
 	...
-	base + 0x3FFE000: Priority threshold for context 15871
-	base + 0x3FFE004: Claim/complete for context 15871
-	base + 0x3FFE008: Reserved
+	base + 0x3FFF000: Priority threshold for context 15871
+	base + 0x3FFF004: Claim/complete for context 15871
+	base + 0x3FFF008: Reserved
 	...	
 	base + 0x3FFFFFC: Reserved
 	
@@ -112,7 +116,7 @@ The memory map register width is in 32-bit.
 
 If PLIC supports Interrupt Priorities, then each PLIC interrupt source can be assigned a priority by writing to its 32-bit
 memory-mapped `priority` register.  A priority value of 0 is reserved to mean ''never interrupt'' and effectively 
-disables the interrupt. Priority 1 is the lowest active priority while the maximun level of priority depends on 
+disables the interrupt. Priority 1 is the lowest active priority while the maximum level of priority depends on 
 PLIC implementation. Ties between global interrupts of the same priority are broken by the Interrupt ID; interrupts 
 with the lowest ID have the highest
 effective priority. +
