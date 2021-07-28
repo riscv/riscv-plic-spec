@@ -16,7 +16,8 @@ https://creativecommons.org/licenses/by/4.0/.
 == Introduction
 
 This document contains the RISC-V platform-level interrupt controller (PLIC)
-specification, which defines an interrupt controller specifically designed to
+specification (was removed from https://github.com/riscv/riscv-isa-manual/releases/download/draft-20181201-5449851/riscv-privileged.pdf[RISC-V Privileged Spec v1.11-draft])
+, which defines an interrupt controller specifically designed to
 work in the context of RISC-V systems.  The PLIC multiplexes various device
 interrupts onto the external interrupt lines of Hart contexts, with
 hardware support for interrupt priorities. +
