@@ -1,0 +1,8 @@
+[Preface]
+## Change Log
+
+[cols="1,1,1", width=80%, align="center", options="header"]
+|===
+| **Date** | **Version** | Description
+| 2021/9/17 | v1.0 | The initial version of this specification
+|===
