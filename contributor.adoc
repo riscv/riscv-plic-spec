@@ -2,6 +2,7 @@
 
 ## Contributors
 Abner Chang <abner.chang@hpe.com> +
+Robert Balas <balasr@iis.ee.ethz.ch> +
 Campbell He +
 Chunchi Che +
 Drew Barbier <drew@sifive.com> +
