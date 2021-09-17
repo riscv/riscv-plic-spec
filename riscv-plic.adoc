@@ -1,5 +1,56 @@
-= *RISC-V Platform-Level Interrupt Controller Specification*
+[[riscv-smbios]]
+= RISC-V Platform-Level Interrupt Controller Specification
+:description: A working template for documenting RISC-V architecture in asciidoc
+:company: RISC-V.org
+:revdate: 09/2021
+:revnumber: 1.0
+//:revremark:
+//development: assume everything can change
+//stable: assume everything could change
+//frozen: of you implement this version you assume the risk that something might change because of the public review cycle  but we expect little to no change.
+//ratified: you can implement this and be assured nothing will change. if something needs to change due to an errata or enhancement, it will come out in a new extension. we do not revise extensions.
+:url-riscv: http://riscv.org
+:doctype: book
+:preface-title: Preamble
+//:colophon:
+//:appendix-caption: Appendix
+:imagesdir: images
+:title-logo-image: image:risc-v_logo.png[pdfwidth=3.25in,align=center]
+//:page-background-image: image:draft.svg[opacity=20%]
+//:title-page-background-image: none
+:back-cover-image: image:backpage.png[opacity=25%]
+// Settings:
+:experimental:
+:reproducible:
+:imagesoutdir: images
+:bibtex-file: resources/riscv-spec.bib
+:bibtex-order: alphabetical
+:bibtex-style: apa
+:icons: font
+:lang: en
+:listing-caption: Listing
+:sectnums:
+:toc: left
+:toclevels: 4
+:source-highlighter: pygments
+ifdef::backend-pdf[]
+:source-highlighter: coderay
+endif::[]
+:table-caption: Table
+:figure-caption: Figure
+:xrefstyle: full
+:chapter-refsig: Chapter
+:section-refsig: Section
+:appendix-refsig: Appendix
+:data-uri:
+:hide-uri-scheme:
+:stem: latexmath
+:footnote:
 
+// changelog for the document
+include::changelog.adoc[]
+
+[Preface]
 == Copyright and license information
 
 This RISC-V PLIC specification is
@@ -29,8 +80,8 @@ register within the PLIC operation parameters. The PLIC which claimed as
 PLIC-Compliant standard PLIC should follow the implementations mentioned
 in sections below.
 
-.Figure 1 RISC-V PLIC Interrupt Architecture Block Diagram
-image::Images/PLIC.jpg[GitHub,1000,643, link=https://github.com/riscv/riscv-plic-spec/blob/master/Images/PLIC.jpg]
+.RISC-V PLIC Interrupt Architecture Block Diagram
+image::PLIC.jpg[400,432,align="center"]
 
 == RISC-V PLIC Operation Parameters
 
@@ -58,8 +109,8 @@ General PLIC operation parameter register blocks are defined in this spec, those
 
 Below is the figure of PLIC Operation Parameter Block Diagram,
 
-.Figure 2 PLIC Operation Parameter Block Diagram
-image::Images/PLICArch.jpg[GitHub, link=https://github.com/riscv/riscv-plic-spec/blob/master/Images/PLICArch.jpg]
+.PLIC Operation Parameter Block Diagram
+image::PLICArch.jpg[align="center"]
 
 == Memory Map
 
@@ -315,3 +366,5 @@ offset 0x200000.
 	...
 	0x3FFF004: Interrupt Completion for context 15871
 
+// Contributors of thisdocument
+include::contributor.adoc[]
