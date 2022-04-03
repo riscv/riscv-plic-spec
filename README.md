@@ -1,2 +1,2 @@
 # riscv-plic-spec
-This is the document that describes the architecture and mechanism of RISC-V platform-level interrupt controller (PLIC).
+This is the document that describes operation parameters according RISC-V platform-level interrupt controller (PLIC).
