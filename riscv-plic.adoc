@@ -187,7 +187,23 @@ sources have the same assigned priority. Smaller values of interrupt ID take pre
 === Interrupt Flow
 
 Below figure shows the messages ﬂowing between agents when handling interrupts
-via the PLIC.
+via the PLIC. +
+
+* Global interrupts are sent from their source to an interrupt gateway that
+processes the interrupt signal from each source
+* Interrupt gateway then sends a single interrupt request to the PLIC core, which
+latches these in the core interrupt pending bits (IP).
+* The PLIC core forwards an interrupt notiﬁcation to one or more targets if
+the targets have any pending interrupts enabled, and the priority of the pending
+interrupts exceeds a per-target threshold.
+* When the target takes the external interrup, it sends an interrupt claim
+request to retrieve the identiﬁer of the highest priority global interrupt
+source pending for that target from the PLIC core.
+* PLIC core then clears the corresponding interrupt source pending bit.
+* After the target has serviced the interrupt, it sends the associated interrupt
+gateway an interrupt completion message
+* The interrupt gateway can now forward another interrupt request for the same
+source to the PLIC.
 
 .PLIC Interrupt Flow
 image::PLICInterruptFlow.jpg[align="center"]
