@@ -3,15 +3,8 @@
 ## Contributors
 Abner Chang <abner.chang@hpe.com> +
 Robert Balas <balasr@iis.ee.ethz.ch> +
-Campbell He +
-Chunchi Che +
 Drew Barbier <drew@sifive.com> +
 Jeff Scheel <jeff@riscv.org> +
-Jessica Clarke +
+Jessica Clarke <jrtc27@jrtc27.com> +
 Palmer Dabbelt <palmer@dabbelt.com> +
-Rongcui Dong +
 Yan <phantom@zju.edu.cn>
-
-
-
-
