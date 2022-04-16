@@ -1,8 +1,12 @@
-[Preface]
-## Change Log
+// SPDX-License-Identifier: CC-BY-4.0
+//
+// changelog.adoc: change log for the document
+//
+// Provide a list of changes made to each revision of the document.
+//
+[preface]
+== Change Log
 
-[cols="1,1,1", width=80%, align="center", options="header"]
-|===
-| **Date** | **Version** | Description
-| 2021/9/17 | v1.0 | The initial version of this specification
-|===
+=== version 1.0.0_rc1
+* 2022-4-16
+** The pre-public review version

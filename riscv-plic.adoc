@@ -1,31 +1,26 @@
-[[riscv-smbios]]
-= RISC-V Platform-Level Interrupt Controller Specification
-:description: A working template for documenting RISC-V architecture in asciidoc
+[[riscv-plic]]
+
+:description: RISC-V PLIC Specification
 :company: RISC-V.org
-:revdate: 09/2021
-:revnumber: 1.0
-//:revremark:
-//development: assume everything can change
-//stable: assume everything could change
-//frozen: of you implement this version you assume the risk that something might change because of the public review cycle  but we expect little to no change.
-//ratified: you can implement this and be assured nothing will change. if something needs to change due to an errata or enhancement, it will come out in a new extension. we do not revise extensions.
+:revdate: 04/2022
+:revnumber: 1.0.0_rc1
+:revremark: This document is in development. Assume everything can change. See http://riscv.org/spec-state for details.
 :url-riscv: http://riscv.org
 :doctype: book
 :preface-title: Preamble
-//:colophon:
-//:appendix-caption: Appendix
+:colophon:
+:appendix-caption: Appendix
 :imagesdir: images
-:title-logo-image: image:risc-v_logo.png[pdfwidth=3.25in,align=center]
-//:page-background-image: image:draft.svg[opacity=20%]
-//:title-page-background-image: none
-:back-cover-image: image:backpage.png[opacity=25%]
+:title-logo-image: image:../docs-resources/images/risc-v_logo.svg[pdfwidth=3.25in,align=center]
 // Settings:
 :experimental:
 :reproducible:
+// needs to be changed? bug discussion started
+//:WaveDromEditorApp: app/wavedrom-editor.app
 :imagesoutdir: images
-:bibtex-file: resources/riscv-spec.bib
-:bibtex-order: alphabetical
-:bibtex-style: apa
+//:bibtex-file: example.bib
+//:bibtex-order: alphabetical
+//:bibtex-style: apa
 :icons: font
 :lang: en
 :listing-caption: Listing
@@ -36,46 +31,32 @@
 ifdef::backend-pdf[]
 :source-highlighter: coderay
 endif::[]
-:table-caption: Table
-:figure-caption: Figure
-:xrefstyle: full
-:chapter-refsig: Chapter
-:section-refsig: Section
-:appendix-refsig: Appendix
 :data-uri:
 :hide-uri-scheme:
 :stem: latexmath
 :footnote:
+:xrefstyle: short
 
-// changelog for the document
+= RISC-V Platform-Level Interrupt Controller Specification
+RISC-V Task Group
+
+// Preamble
+[WARNING]
+.This document is in the link:http://riscv.org/spec-state[Development state]
+====
+Assume everything can change. This draft specification will change before 
+being accepted as standard, so implementations made to this draft 
+specification will likely not conform to the future standard.
+====
+
+// changelog of the document
 include::changelog.adoc[]
-
-[Preface]
-== Copyright and license information
-
-This RISC-V PLIC specification is
-
-[%hardbreaks]
-(C) 2017 Drew Barbier <drew@sifive.com>
-(C) 2018-2019 Palmer Dabbelt <palmer@sifive.com>
-(C) 2019-2021 Abner Chang, Hewlett Packard Enterprise <abner.chang@hpe.com>
-
-It is licensed under the Creative Commons Attribution 4.0 International
-License (CC-BY 4.0).  The full license text is available at
-https://creativecommons.org/licenses/by/4.0/.
-
-== Introduction
-
-This specification delineates the operation parameters according the general PLIC
-architecture defined in the RISC-V platform-level interrupt controller (PLIC)
-specification (was removed from https://github.com/riscv/riscv-isa-manual/releases/download/draft-20181201-5449851/riscv-privileged.pdf[RISC-V Privileged Spec v1.11-draft]) to work in the context of RISC-V systems.  +
-The PLIC multiplexes various device interrupts onto the external interrupt lines
-of Hart contexts, with hardware support for interrupt priorities. PLIC supports
-up-to 1023 interrupts (0 is reserved) and 15872 contexts, but the actual number of
-interrupts and context depends on the PLIC implementation. However, the implement
-must adhere to the  offset of each register within the PLIC operation parameters.
-The PLIC which claimed as PLIC-Compliant standard PLIC should follow the 
-implementations mentioned in sections below.
+// licensing of this document
+include::licensing.adoc[]
+// Contributors of this document
+include::contributor.adoc[]
+// introduction of this document
+include::introduction.adoc[]
 
 === Interrupt Targets and Hart Contexts
 
@@ -526,6 +507,3 @@ offset 0x200000.
 	...
 	...
 	0x3FFF004: Interrupt Completion for context 15871
-
-// Contributors of thisdocument
-include::contributor.adoc[]

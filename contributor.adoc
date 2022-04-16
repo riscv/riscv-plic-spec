@@ -1,6 +1,15 @@
+// SPDX-License-Identifier: CC-BY-4.0
+//
+// contributors.adoc: acknowledge document contributors
+//
+// Provide a simple acknowledgement to all who have contributed to the
+// specification.
+//
 [Preface]
 
-## Contributors
+== Contributors
+This RISC-V specification has been contributed to directly or indirectly by: +
+
 Abner Chang <abner.chang@hpe.com> +
 Robert Balas <balasr@iis.ee.ethz.ch> +
 Drew Barbier <drew@sifive.com> +
