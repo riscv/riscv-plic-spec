@@ -10,3 +10,9 @@
 === version 1.0.0_rc1
 * 2022-4-16
 ** The pre-public review version
+
+=== version 1.0.0_rc2
+* 2022-5-30
+** Revised the copyright statements to follow section 3.3 in Appendix
+A "INTELLECTUAL PROPERTY RIGHTS POLICY " of the RISC-V Regulations.
+** Correct offsets of PLIC Interrupt Enable Bits memory map.

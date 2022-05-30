@@ -2,8 +2,8 @@
 
 :description: RISC-V PLIC Specification
 :company: RISC-V.org
-:revdate: 04/2022
-:revnumber: 1.0.0_rc1
+:revdate: 05/2022
+:revnumber: 1.0.0_rc2
 :revremark: This document is in development. Assume everything can change. See http://riscv.org/spec-state for details.
 :url-riscv: http://riscv.org
 :doctype: book
