@@ -375,22 +375,22 @@ Enable Bit blocks
 
 	0x002000: Interrupt Source #0 to #31 Enable Bits on context 0
 	...
-	0x00207F: Interrupt Source #992 to #1023 Enable Bits on context 0
+	0x00207C: Interrupt Source #992 to #1023 Enable Bits on context 0
 	0x002080: Interrupt Source #0 to #31 Enable Bits on context 1
 	...
-	0x0020FF: Interrupt Source #992 to #1023 Enable Bits on context 1
+	0x0020FC: Interrupt Source #992 to #1023 Enable Bits on context 1
 	0x002100: Interrupt Source #0 to #31 Enable Bits on context 2
 	...
-	0x00217F: Interrupt Source #992 to #1023 Enable Bits on context 2
+	0x00217C: Interrupt Source #992 to #1023 Enable Bits on context 2
 	0x002180: Interrupt Source #0 to #31 Enable Bits on context 3
 	...
-	0x0021FF: Interrupt Source #992 to #1023 Enable Bits on context 3
+	0x0021FC: Interrupt Source #992 to #1023 Enable Bits on context 3
 	...
 	...
 	...
 	0x1F1F80: Interrupt Source #0 to #31 on context 15871	
 	...	
-	0x1F1F80: Interrupt Source #992 to #1023 on context 15871
+	0x1F1FFC: Interrupt Source #992 to #1023 on context 15871
 	
 == Priority Thresholds
 
