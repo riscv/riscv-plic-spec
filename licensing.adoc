@@ -10,12 +10,9 @@
 
 This RISC-V PLIC specification is
 
-[%hardbreaks]
-(C) 2017 Drew Barbier <drew@sifive.com>
-(C) 2018-2019 Palmer Dabbelt <palmer@sifive.com>
-(C) 2019-2021 Abner Chang, Hewlett Packard Enterprise <abner.chang@hpe.com>
+© 2017-2022 RISC-V International
 
-It is licensed under the Creative Commons Attribution 4.0 International
-License (CC-BY 4.0).  The full license text is available at
+It is licensed under the Creative Commons Attribution 4.0 International License
+(CC-BY 4.0). The full license text is available at
 https://creativecommons.org/licenses/by/4.0/.
 
