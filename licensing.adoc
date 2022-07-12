@@ -8,11 +8,16 @@
 [Preface]
 == Copyright and license information
 
-This RISC-V PLIC specification is
+This RISC-V PLIC specification is © 2017-2022 RISC-V international
 
-© 2017-2022 RISC-V International
-
-It is licensed under the Creative Commons Attribution 4.0 International License
-(CC-BY 4.0). The full license text is available at
+This document is released under a Creative Commons Attribution 4.0
+International License. +
 https://creativecommons.org/licenses/by/4.0/.
+
+Please cite as: “RISC-V Platform-Level Interrupt Controller Specification",  RISC-V International
+
+This document is a derivative of the "The RISC-V Instruction Set Manual, Volume II: Privileged Architecture, Document
+version 1.9.1" released under following license: © 2010–2017 Andrew Waterman,
+Yunsup Lee, Rimas Aviˇzienis, David Patterson, Krste Asanovi ́c.
+Creative Commons Attribution 4.0 International License.
 
