@@ -177,7 +177,7 @@ latches these in the core interrupt pending bits (IP).
 * The PLIC core forwards an interrupt notiﬁcation to one or more targets if
 the targets have any pending interrupts enabled, and the priority of the pending
 interrupts exceeds a per-target threshold.
-* When the target takes the external interrup, it sends an interrupt claim
+* When the target takes the external interrupt, it sends an interrupt claim
 request to retrieve the identiﬁer of the highest priority global interrupt
 source pending for that target from the PLIC core.
 * PLIC core then clears the corresponding interrupt source pending bit.
