@@ -397,7 +397,7 @@ Enable Bit blocks
 PLIC provides context based `threshold register` for the settings of a interrupt priority 
 threshold of each context. The `threshold register` is a WARL field. The PLIC will mask all 
 PLIC interrupts of a priority less than or equal to `threshold`.  For example,
-a`threshold` value of zero permits all interrupts with non-zero priority. +
+a `threshold` value of zero permits all interrupts with non-zero priority. +
  +
 The base address of Priority Thresholds register block is located at 4K alignment starts
 from offset 0x200000.
