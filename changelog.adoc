@@ -7,6 +7,10 @@
 [preface]
 == Change Log
 
+=== version 1.0.0_rc4
+* 2022-8-27
+** Update specification to Frozen state.
+
 === version 1.0.0_rc3
 * 2022-6-11
 ** Revised Copyright and license information
