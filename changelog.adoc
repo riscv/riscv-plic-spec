@@ -7,6 +7,11 @@
 [preface]
 == Change Log
 
+=== version 1.0.0_rc5
+* 2022-10-29
+** Clarify the "register width" when access to memory map register.
+** Combine Register Width chapter and Memory Map chapter.
+
 === version 1.0.0_rc4
 * 2022-8-27
 ** Update specification to Frozen state.
