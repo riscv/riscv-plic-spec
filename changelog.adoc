@@ -7,10 +7,6 @@
 [preface]
 == Change Log
 
-=== version 1.0.0_rc6
-* 2023-1-5
-** Remove H/U mode from this spec.
-
 === version 1.0.0_rc5
 * 2022-10-29
 ** Clarify the "register width" when access to memory map register.
