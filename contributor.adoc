@@ -12,6 +12,7 @@ The contributor to RISC-V PLIC specification in alphabetical order: +
 
 Abner Chang <abner.chang@hpe.com> +
 Andrew Waterman <andrew@sifive.com> +
+Bin Meng <bmeng.cn@gmail.com> +
 Drew Barbier <drew@sifive.com> +
 Jeff Scheel <jeff@riscv.org> +
 Jessica Clarke <jrtc27@jrtc27.com> +
