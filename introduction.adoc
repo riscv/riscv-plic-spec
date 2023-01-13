@@ -15,7 +15,7 @@ to work in the context of RISC-V systems. +
 The PLIC multiplexes various device interrupts onto the external interrupt lines
 of Hart contexts, with hardware support for interrupt priorities. PLIC supports
 up-to 1023 interrupts (0 is reserved) and 15872 contexts, but the actual number of
-interrupts and context depends on the PLIC implementation. However, the implement
-must adhere to the  offset of each register within the PLIC operation parameters.
+interrupts and context depends on the PLIC implementation. However, the implementation
+must adhere to the offset of each register within the PLIC operation parameters.
 The PLIC which claimed as PLIC-Compliant standard PLIC should follow the 
 implementations mentioned in sections below.
