@@ -104,7 +104,7 @@ image::PLIC.jpg[400,432,align="center"]
 === Interrupt Gateways
 
 The interrupt gateways are responsible for converting global interrupt signals 
-into a common interrupt request format, and for controlling the ﬂow of interrupt
+into a common interrupt request format, and for controlling the flow of interrupt
 requests to the PLIC core. At most one interrupt request per interrupt source can
 be pending in the PLIC core at any time, indicated by setting the source's IP bit.
 The gateway only forwards a new interrupt request to the PLIC core after receiving 
