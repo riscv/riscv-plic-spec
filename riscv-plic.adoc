@@ -2,8 +2,8 @@
 
 :description: RISC-V PLIC Specification
 :company: RISC-V.org
-:revdate: 10/2022
-:revnumber: 1.0.0_rc5
+:revdate: 1/2023
+:revnumber: 1.0.0_rc6
 :revremark: This document is in Frozen state. Change is extremely unlikely. See http://riscv.org/spec-state for details.
 :url-riscv: http://riscv.org
 :doctype: book
