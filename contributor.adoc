@@ -16,7 +16,7 @@ Bin Meng <bmeng.cn@gmail.com> +
 Drew Barbier <drew@sifive.com> +
 Jeff Scheel <jeff@riscv.org> +
 Jessica Clarke <jrtc27@jrtc27.com> +
+Jinyan Xu <phantom@zju.edu.cn> +
 Krste Asanovic <krste@sifive.com> +
 Palmer Dabbelt <palmer@dabbelt.com> +
-Robert Balas <balasr@iis.ee.ethz.ch> +
-Yan <phantom@zju.edu.cn>
+Robert Balas <balasr@iis.ee.ethz.ch>
