@@ -7,6 +7,10 @@
 [preface]
 == Change Log
 
+=== version 1.0.0
+* 2023-3-11
+** Ratified version
+
 === version 1.0.0_rc6
 * 2023-1-5
 ** Remove H/U mode from this spec.

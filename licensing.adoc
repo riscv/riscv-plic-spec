@@ -8,7 +8,7 @@
 [Preface]
 == Copyright and license information
 
-This RISC-V PLIC specification is © 2017-2022 RISC-V international
+This RISC-V PLIC specification is © 2017-2023 RISC-V international
 
 This document is released under a Creative Commons Attribution 4.0
 International License. +
