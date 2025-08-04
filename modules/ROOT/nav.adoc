@@ -1,0 +1,6 @@
+.Platform-Level Interrupt Controller 
+* xref:contributor.adoc[Contributors]
+* xref:changelog.adoc[Changelog]
+* xref:licensing.adoc[Licensing]
+* xref:introduction.adoc[Introduction]
+* xref:riscv-plic.adoc[RISC-V Platform-Level Interrupt Controller ]

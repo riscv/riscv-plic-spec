@@ -1,0 +1,5 @@
+name: plic
+title: RISC-V Platform-Level Interrupt Controller 
+version: v1.0.0
+nav:
+- modules/ROOT/nav.adoc
