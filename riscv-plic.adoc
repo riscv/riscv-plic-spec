@@ -97,7 +97,7 @@ preemption or nesting so this must be handled by the cores hosting multiple
 interrupt target contexts.
 
 .RISC-V PLIC Interrupt Architecture Block Diagram
-image::PLIC.jpg[400,432,align="center"]
+image:PLIC.jpg[400,432,align="center"]
 
 === Interrupt Gateways
 
@@ -196,7 +196,7 @@ gateway an interrupt completion message
 source to the PLIC.
 
 .PLIC Interrupt Flow
-image::PLICInterruptFlow.jpg[align="center"]
+image:PLICInterruptFlow.jpg[align="center"]
 
 == RISC-V PLIC Operation Parameters
 
@@ -225,7 +225,7 @@ General PLIC operation parameter register blocks are defined in this spec, those
 Below is the figure of PLIC Operation Parameter Block Diagram,
 
 .PLIC Operation Parameter Block Diagram
-image::PLICArch.jpg[align="center"]
+image:PLICArch.jpg[align="center"]
 
 == Memory Map
 

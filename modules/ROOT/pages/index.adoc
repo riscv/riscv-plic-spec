@@ -1,5 +1,5 @@
 image:risc-v_logo.svg[]
 
-= RISC-V Platform-Level Interrupt Controller Specification
+== RISC-V Platform-Level Interrupt Controller Specification
 
 Version 1.0.0, 3/2023: Ratified state
