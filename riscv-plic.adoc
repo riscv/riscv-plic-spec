@@ -101,6 +101,11 @@ image::PLIC.jpg[400,432,align="center"]
 
 === Interrupt Gateways
 
+The PLIC is composed of two sub-components (see <<plic-block-diagram>>):
+
+* Gateways
+* PLIC Core
+
 The interrupt gateways are responsible for converting global interrupt signals 
 into a common interrupt request format, and for controlling the flow of interrupt
 requests to the PLIC core. At most one interrupt request per interrupt source can
@@ -224,6 +229,7 @@ General PLIC operation parameter register blocks are defined in this spec, those
 
 Below is the figure of PLIC Operation Parameter Block Diagram,
 
+[#plic-block-diagram]
 .PLIC Operation Parameter Block Diagram
 image::PLICArch.jpg[align="center"]
 
