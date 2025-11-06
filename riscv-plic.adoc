@@ -435,7 +435,7 @@ service the interrupt. The target sends an interrupt claim message to the PLIC
 core, which will usually be implemented as a non-idempotent memory-mapped I/O
 control register read. On receiving a claim message, the PLIC core will atomically
 determine the ID of the highest-priority pending interrupt for the target
-and then clear down the corresponding source’s IP bit. The PLIC core will then
+and then clear the corresponding source’s IP bit. The PLIC core will then
 return the ID to the target. The PLIC core will return an ID of zero, if there
 were no pending interrupts for the target when the claim was serviced. +
 After the highest-priority pending interrupt is claimed by a target and the
