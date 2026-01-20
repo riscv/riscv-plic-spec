@@ -1,4 +1,5 @@
 .Platform-Level Interrupt Controller 
+* xref:index.adoc[Platform-Level Interrupt Controller]
 * xref:contributor.adoc[Contributors]
 * xref:changelog.adoc[Changelog]
 * xref:licensing.adoc[Licensing]
