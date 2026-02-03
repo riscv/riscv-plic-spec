@@ -1,7 +1,14 @@
 .Platform-Level Interrupt Controller 
 * xref:index.adoc[Platform-Level Interrupt Controller]
-* xref:contributor.adoc[Contributors]
 * xref:changelog.adoc[Changelog]
-* xref:licensing.adoc[Licensing]
+* xref:licensing.adoc[Copyright and license]
+* xref:contributor.adoc[Contributors]
 * xref:introduction.adoc[Introduction]
-* xref:riscv-plic.adoc[RISC-V Platform-Level Interrupt Controller ]
+* xref:plic-op-parms.adoc[RISC-V PLIC Operation Parameters]
+* xref:plic-memory-map.adoc[Memory Map]
+* xref:plic-priority.adoc[Interrupt Priorities]
+* xref:plic-interrupts.adoc[Interrupt Pending Bits]
+* xref:plic-enables.adoc[Interrupt Enables]
+* xref:plic-claims.adoc[Interrupt Claim Process]
+* xref:plic-completion.adoc[Interrupt Completion]
+
