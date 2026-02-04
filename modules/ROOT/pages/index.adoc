@@ -6,3 +6,12 @@ RISC-V Task Group
 
 Version 1.0.0, 3/2023: This document is in Ratified state. No changes are allowed. See
 http://riscv.org/spec-state for details.
+
+// Preamble
+[WARNING]
+.This document is in the link:http://riscv.org/spec-state[Ratified state]
+====
+No changes are allowed. Any desired or needed changes can be the subject of a
+follow-on new extension. Ratified extensions are never revised.
+====
+
