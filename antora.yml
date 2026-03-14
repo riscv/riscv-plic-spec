@@ -7,5 +7,5 @@ nav:
 asciidoc:
   attributes:
     page-pdf_url: _attachments/riscv-plic-1.0.0.pdf
-    more_details_url: https://riscv.atlassian.net/wiki/spaces/HOME/pages/806617106/RISC-V+Platform-Level+Interrupt+Controller
+    more_details_url: https://riscv.atlassian.net/wiki/external/Mzg2YjQ2ZTBiODYyNDBkNDg2N2JmZmQ1ZTUwOWNmZWI
     page-group: hardware
