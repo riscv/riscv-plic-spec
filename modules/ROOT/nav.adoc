@@ -9,6 +9,6 @@
 * xref:plic-priority.adoc[Interrupt Priorities]
 * xref:plic-interrupts.adoc[Interrupt Pending Bits]
 * xref:plic-enables.adoc[Interrupt Enables]
+* xref:plic-thresholds.adoc[Priority Thresholds]
 * xref:plic-claims.adoc[Interrupt Claim Process]
 * xref:plic-completion.adoc[Interrupt Completion]
-
