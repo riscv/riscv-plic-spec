@@ -9,5 +9,5 @@ asciidoc:
     page-group: hardware
     page-card-description: 'Interrupt controller behavior and programming model.'
     page-release-date: 'February 2023'
-    page-pdf_url: _attachments/riscv-plic-1.0.0.pdf
+    page-pdf_url: _attachments/riscv-plic.pdf
     more_details_url: https://riscv.atlassian.net/wiki/external/Mzg2YjQ2ZTBiODYyNDBkNDg2N2JmZmQ1ZTUwOWNmZWI
